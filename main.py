@@ -139,12 +139,12 @@ with placeholder.container():
         )
     with col2:
         st.metric(
-            label="DAU",
+            label="Rolling Avg DAU",
             value=int(avg_dau)
         )
     with col3:
         st.metric(
-            label="MAU",
+            label="Rolling Avg MAU",
             value=int(avg_mau)+10000
         )
 
@@ -243,7 +243,7 @@ st.plotly_chart(fig, use_container_width= True)
 
 # Set the title
 # Set the title
-title_text = 'Outliers (Access > 250)'
+title_text = 'Outliers (No. of access > 250 per month)'
 centered_title = f"<h2 style='text-align: center; font-size: 20px;'>{title_text}</h2>"
 st.markdown(centered_title, unsafe_allow_html=True)
 st.dataframe(outliers_selection,use_container_width=True)
