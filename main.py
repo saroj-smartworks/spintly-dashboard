@@ -16,6 +16,7 @@ conn = psycopg2.connect(
 )
 
 
+
 # Specify the table name to read
 table_name = 'prod_spintly_master_dau'
 table_name_2 = 'prod_workstation_master'
@@ -53,19 +54,43 @@ static_values = [1, 0.9, 0.8, 0.7, 0.6]
 
 
 # Create a selectbox parameter in the sidebar
-scaling_factor = st.sidebar.selectbox('Scaling Factor:', static_values)
+scaling_factor = st.sidebar.selectbox('Scaling Factor:', static_values, index=3)
 
 # City Widget
 attribute_city = workstation['city'].unique()
-selected_city = st.sidebar.multiselect('Select city', options=attribute_city, default=attribute_city)
+# Add "All" as the first option
+attribute_city_with_all = ['All'] + list(attribute_city)
+selected_city = st.sidebar.selectbox('Select city', options=attribute_city_with_all)
+# Check if "All" is selected
+if 'All' in selected_city:
+    selected_city = list(attribute_city)
 
 # Location Widget
+# Define the options for the centre multiselect
 attribute_location = workstation['centre'].unique()
-selected_location = st.sidebar.multiselect('Select Centre', options=attribute_location, default=attribute_location)
 
-# Organisation Widget
+# Add "All" as the first option
+attribute_location_with_all = ['All'] + list(attribute_location)
+
+# Create the multiselect widget
+selected_location = st.sidebar.selectbox('Select Centre', options=attribute_location_with_all)
+
+# Check if "All" is selected
+if 'All' in selected_location:
+    selected_location = list(attribute_location)
+
+# Define the options for the client multiselect
 attribute_client = workstation['client'].unique()
-selected_client = st.sidebar.multiselect('Select Client', options=attribute_client, default=attribute_client)
+
+# Add "All" as the first option
+attribute_client_with_all = ['All'] + list(attribute_client)
+
+# Create the multiselect widget
+selected_client = st.sidebar.selectbox('Select Client', options=attribute_client_with_all)
+
+# Check if "All" is selected
+if 'All' in selected_client:
+    selected_client = list(attribute_client)
 
 
 # Filter the DataFrame based on the selected attribute
@@ -149,19 +174,19 @@ with placeholder.container():
         )
 
 # Create subplots with 1 row and 2 columns
-fig = make_subplots(rows=1, cols=2)
+fig = make_subplots(rows=1, cols=1)
 
 # Add line chart 1 to the first subplot
 fig.add_trace(go.Scatter(x=df_agg['date'], y=df_agg['dau'], mode='lines', name='DAU'), row=1, col=1)
 
 # Add line chart 2 to the second subplot
-fig.add_trace(go.Scatter(x=mau_agg['date'], y=mau_agg['mau'], mode='lines', name='MAU'), row=1, col=2)
+# fig.add_trace(go.Scatter(x=mau_agg['date'], y=mau_agg['mau'], mode='lines', name='MAU'), row=1, col=2)
 
 # Configure layout
 fig.update_layout(
-    title='Daily Active Users(DAU) & Monthly Active Users(MAU)',
-    xaxis=dict(title='X'),
-    yaxis=dict(title='Y'),
+    title='Daily Active Users(DAU)',
+    xaxis=dict(title='Date'),
+    yaxis=dict(title='DAU'),
     title_x=0.3
 )
 # Display the chart using Streamlit
@@ -214,7 +239,7 @@ fig.add_trace(go.Bar(
     y=mau_workstation_ratio['ratio'],
     name='Ratio',
     text=mau_workstation_ratio['ratio'],
-    textposition='auto'
+    textposition='auto'  # Show text labels inside bars
 ))
 #
 # fig.add_trace(go.Bar(
