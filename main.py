@@ -212,7 +212,9 @@ fig = go.Figure()
 fig.add_trace(go.Bar(
     x=mau_workstation_ratio['centre'],
     y=mau_workstation_ratio['ratio'],
-    name='Ratio'
+    name='Ratio',
+    text=mau_workstation_ratio['ratio'],
+    textposition='auto'
 ))
 #
 # fig.add_trace(go.Bar(
