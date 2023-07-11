@@ -7,21 +7,14 @@ from plotly.subplots import make_subplots
 
 
 # Establish connection to Redshift
-# conn = psycopg2.connect(
-#     host=st.secrets.db_credentials.host,
-#     port= st.secrets.db_credentials.port,
-#     database=st.secrets.db_credentials.db,
-#     user=st.secrets.db_credentials.db_username,
-#     password=st.secrets.db_credentials.db_password
-# )
-
 conn = psycopg2.connect(
-    host='13.214.233.50',
-    port='5439',
-    database='smartworks_analytics',
-    user='smartworks',
-    password='Smartworks123'
+    host=st.secrets.db_credentials.host,
+    port= st.secrets.db_credentials.port,
+    database=st.secrets.db_credentials.db,
+    user=st.secrets.db_credentials.db_username,
+    password=st.secrets.db_credentials.db_password
 )
+
 
 # Specify the table name to read
 table_name = 'prod_spintly_master_dau'
